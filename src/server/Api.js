@@ -7,8 +7,9 @@ export async function getApi(value, page) {
     const response = await axios.get(
       `${BASE_URL}/?q=${value}&page=${page}&key=${TOKEN}&image_type=photo&orientation=horizontal&per_page=12`
     );
-      return response.data.hits;
+      return response.data;
   } catch (error) {
-    throw new Error(error);
+    alert(`${error.message}`)
+    throw new Error(error.message);
   }
 }

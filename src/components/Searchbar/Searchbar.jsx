@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-
+import {
+  HeaderSearchbar,
+  SearchForm,
+  SearchFormButton,
+  SearchFormInput,
+} from './Searchbar.styled';
+import { AiOutlineSearch } from 'react-icons/ai/index';
+import PropTypes from 'prop-types';
 
 export class Searchbar extends Component {
   state = {
@@ -9,12 +16,12 @@ export class Searchbar extends Component {
     this.setState({ value: event.currentTarget.value.toLowerCase() });
   };
 
-    handleSubmit = event => {
-      const value = this.state.value
-        event.preventDefault();
-        if (value.trim() === '') {
-            alert('Please enter a value in the search');
-        }
+  handleSubmit = event => {
+    const value = this.state.value;
+    event.preventDefault();
+    if (value.trim() === '') {
+      alert('Please enter a value in the search');
+    }
     this.props.onSabmit(value);
     this.setState({ value: '' });
   };
@@ -22,13 +29,16 @@ export class Searchbar extends Component {
   render() {
     const { value } = this.state;
     return (
-      <header >
-        <form onSubmit={this.handleSubmit}>
-          <button type="submit">
-            <span >Search</span>
-          </button>
+      <HeaderSearchbar>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchFormButton type="submit">
+            <AiOutlineSearch
+              style={{ fill: `black`, width: `100%`, height: `100%` }}
+            />
+            <span>Search</span>
+          </SearchFormButton>
 
-          <input
+          <SearchFormInput
             type="text"
             autoComplete="off"
             autoFocus
@@ -36,8 +46,12 @@ export class Searchbar extends Component {
             value={value}
             onChange={this.handleChange}
           />
-        </form>
-      </header>
+        </SearchForm>
+      </HeaderSearchbar>
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSabmit: PropTypes.func.isRequired,
+};
