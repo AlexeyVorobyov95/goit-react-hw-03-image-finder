@@ -1,12 +1,10 @@
-import PropTypes from 'prop-types';
 import { ColorRing } from 'react-loader-spinner';
 import { Background } from './Loader.styled';
 
-export const Loader = ({ visible }) => {
+export const Loader = () => {
   return (
     <Background>
       <ColorRing
-        visible={visible}
         height="150"
         width="150"
         ariaLabel="blocks-loading"
@@ -22,7 +20,3 @@ export const Loader = ({ visible }) => {
     </Background>
   );
 };
-
-Loader.propTypes = {
-    visible: PropTypes.bool.isRequired,
-}

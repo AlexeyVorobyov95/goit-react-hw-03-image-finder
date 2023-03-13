@@ -17,7 +17,11 @@ export class App extends Component {
       };
     });
   };
-  
+
+  clearForm = () => {
+    this.setState({ page: 1 });
+  };
+
   handleSerchForm = value => {
     this.setState({ value });
   };
@@ -28,7 +32,7 @@ export class App extends Component {
     return (
       <Container>
         <GlobalStyles />
-        <Searchbar onSabmit={this.handleSerchForm} />
+        <Searchbar clearForm={this.clearForm} onSabmit={this.handleSerchForm} />
         <ImageGallery onClick={this.handleCilck} page={page} value={value} />
       </Container>
     );

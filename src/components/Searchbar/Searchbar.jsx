@@ -23,6 +23,7 @@ export class Searchbar extends Component {
       alert('Please enter a value in the search');
     }
     this.props.onSabmit(value);
+    this.props.clearForm();
     this.setState({ value: '' });
   };
 

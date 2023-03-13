@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 export class ImageGallery extends Component {
   state = {
     image: [],
-    loading: false,
+    status: `idle`,
+    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -18,53 +19,55 @@ export class ImageGallery extends Component {
     const prevPage = prevProps.page;
 
     if (value !== prevValue || page !== prevPage) {
-      this.setState({
-        loading: true,
-      });
+      this.setState({ status: `panding` });
 
-      getApi(value, page)
-        .then(image => {
-          if (image.hits.length === 0) {
-            alert(`No results were found for your request`);
-            return;
-          }
+      getApi(value, page).then(image => {
+        if (image.hits.length === 0) {
+          alert(`No results were found for your request`);
+        }
+        setTimeout(() => {
           if (value !== prevValue) {
             this.setState({
+              status: `resolved`,
               image: [...image.hits],
             });
           }
+        }, 2000);
+        if (page > 1) {
+          const totalPages = Math.ceil(image.totalHits / 12);
 
-          if (page !== prevPage) {
-            const totalPages = Math.ceil(image.totalHits / 12);
-
-            if (page > totalPages || page === totalPages) {
-              alert(`You reached end of results`);
-            }
+          if (page > totalPages || page === totalPages) {
+            alert(`You reached end of results`);
+          }
+          setTimeout(() => {
             this.setState({
+              status: `resolved`,
               image: [...prevState.image, ...image.hits],
             });
-          }
-        })
-        .finally(this.setState({ loading: false }));
+          }, 2000);
+        }
+      });
     }
   }
 
   render() {
-    const { image, loading } = this.state;
+    const { image, status } = this.state;
 
     return (
       <>
-        {loading && <Loader visible={loading} />}
-        <GalleryList>
-          {image.map(({ id, webformatURL, largeImageURL, tags }) => (
-            <ImageGalleryItem
-              key={id}
-              webImage={webformatURL}
-              largeImage={largeImageURL}
-              tags={tags}
-            />
-          ))}
-        </GalleryList>
+        {status === `resolved` && (
+          <GalleryList>
+            {image.map(({ id, webformatURL, largeImageURL, tags }) => (
+              <ImageGalleryItem
+                key={id}
+                webImage={webformatURL}
+                largeImage={largeImageURL}
+                tags={tags}
+              />
+            ))}
+          </GalleryList>
+        )}
+        {status === `panding` && <Loader />}
         {image.length > 0 && <Button onClick={this.props.onClick} />}
       </>
     );
