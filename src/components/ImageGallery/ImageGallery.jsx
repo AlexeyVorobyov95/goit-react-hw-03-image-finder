@@ -10,7 +10,6 @@ export class ImageGallery extends Component {
   state = {
     image: [],
     status: `idle`,
-    error: null,
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -55,7 +54,7 @@ export class ImageGallery extends Component {
 
     return (
       <>
-        {status === `resolved` && (
+        {image.length > 0 &&
           <GalleryList>
             {image.map(({ id, webformatURL, largeImageURL, tags }) => (
               <ImageGalleryItem
@@ -66,9 +65,9 @@ export class ImageGallery extends Component {
               />
             ))}
           </GalleryList>
-        )}
+        }
         {status === `panding` && <Loader />}
-        {image.length > 0 && <Button onClick={this.props.onClick} />}
+        {status === `resolved` && <Button onClick={this.props.onClick} />}
       </>
     );
   }

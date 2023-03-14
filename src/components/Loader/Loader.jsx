@@ -5,13 +5,12 @@ export const Loader = () => {
   return (
     <Background>
       <ColorRing
-        height="150"
-        width="150"
+        height="75"
+        width="75"
         ariaLabel="blocks-loading"
         wrapperStyle={{
-          position: 'absolute',
+          position: 'relative',
           left: '50%',
-          top: '50%',
           transform: 'translate(-50%)',
         }}
         wrapperClass="blocks-wrapper"
