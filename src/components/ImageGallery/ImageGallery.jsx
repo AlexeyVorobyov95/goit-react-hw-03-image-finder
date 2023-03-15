@@ -12,12 +12,19 @@ export class ImageGallery extends Component {
     status: `idle`,
   };
 
+  clearImage = () => {
+    this.setState({ image: [] });
+  };
+
   componentDidUpdate(prevProps, prevState) {
     const { value, page } = this.props;
     const prevValue = prevProps.value;
     const prevPage = prevProps.page;
 
     if (value !== prevValue || page !== prevPage) {
+      if (value !== prevValue && this.state.image.length > 0) {
+        this.clearImage();
+      }
       this.setState({ status: `panding` });
 
       getApi(value, page).then(image => {
@@ -54,7 +61,7 @@ export class ImageGallery extends Component {
 
     return (
       <>
-        {image.length > 0 &&
+        {image.length > 0 && (
           <GalleryList>
             {image.map(({ id, webformatURL, largeImageURL, tags }) => (
               <ImageGalleryItem
@@ -65,7 +72,7 @@ export class ImageGallery extends Component {
               />
             ))}
           </GalleryList>
-        }
+        )}
         {status === `panding` && <Loader />}
         {status === `resolved` && <Button onClick={this.props.onClick} />}
       </>
