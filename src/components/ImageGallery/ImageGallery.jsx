@@ -31,26 +31,25 @@ export class ImageGallery extends Component {
         if (image.hits.length === 0) {
           alert(`No results were found for your request`);
         }
-        setTimeout(() => {
-          if (value !== prevValue) {
-            this.setState({
-              status: `resolved`,
-              image: [...image.hits],
-            });
-          }
-        }, 2000);
+
+        if (value !== prevValue) {
+          this.setState({
+            status: `resolved`,
+            image: [...image.hits],
+          });
+        }
+
         if (page > 1) {
           const totalPages = Math.ceil(image.totalHits / 12);
 
           if (page > totalPages || page === totalPages) {
             alert(`You reached end of results`);
           }
-          setTimeout(() => {
-            this.setState({
-              status: `resolved`,
-              image: [...prevState.image, ...image.hits],
-            });
-          }, 2000);
+
+          this.setState({
+            status: `resolved`,
+            image: [...prevState.image, ...image.hits],
+          });
         }
       });
     }
